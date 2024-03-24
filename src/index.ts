@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express"
 import dotenv from 'dotenv'
 import express from 'express'
 import passport from 'passport'
+import { isLoggedIn } from "./middleware"
 
 const session = require('express-session')
 
@@ -11,16 +12,14 @@ dotenv.config()
 const port = process.env.PORT
 
 const app = express()
+
 app.use(session({
     secret: 'keyboard cat',
 }));
 app.use(passport.initialize())
 app.use(passport.session())
 
-const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
-    console.log(req.user)
-    req.user ? next() : res.sendStatus(401)
-}
+const routes = require('./routes')
 
 app.get('/', (req: Request, res: Response) => {
     res.send('<a href="/auth/google">Authenticate</a>')
@@ -48,6 +47,8 @@ app.get('/auth/failure', (req: Request, res: Response) => {
 app.get('/protected', isLoggedIn, (req: any, res: Response) => {
     res.send(`Hello ${req.user.displayName}`)
 })
+
+app.use('/', routes)
 
 app.listen(port, () => {
     console.log(`Traffic Pulse Server listening on port ${port}`)

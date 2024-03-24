@@ -23,9 +23,10 @@ model User {
 }
 
 model Profile {
-  id     Int  @id @default(autoincrement())
-  userId Int  @unique
-  user   User @relation(fields: [userId], references: [id])
+  id       Int     @id @default(autoincrement())
+  userId   Int     @unique
+  user     User    @relation(fields: [userId], references: [id])
+  photoUrl String?
   // Add other fields for extra information
 }
 
