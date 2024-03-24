@@ -17,7 +17,7 @@ passport.use(new GoogleStrategy({
             const user = await userService.findUser(profile.id)
             if (!user) {
                 const newUser = await userService.createUser(profile.id, profile)
-                if (!newUser) throw Error("Failed to create new user! Please try again later!")
+                if (!newUser) throw Error("Failed to create the new user! Please try again later!")
             }
             return done(null, profile)
         } catch (e) {
