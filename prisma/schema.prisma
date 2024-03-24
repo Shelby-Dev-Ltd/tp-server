@@ -13,16 +13,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Profile {
-  id     Int     @id @default(autoincrement())
-  bio    String?
-  user   User    @relation(fields: [userId], references: [id])
-  userId Int     @unique
-}
-
 model User {
   id      Int      @id @default(autoincrement())
   email   String   @unique
   name    String?
+  oauthId String?  @unique
   profile Profile?
+  Records Record[]
+}
+
+model Profile {
+  id     Int  @id @default(autoincrement())
+  userId Int  @unique
+  user   User @relation(fields: [userId], references: [id])
+  // Add other fields for extra information
+}
+
+model Media {
+  id     Int      @id @default(autoincrement())
+  url    String
+  type   String // Enum might be better here if you have limited types
+  // Add other fields as needed
+  Record Record[]
+}
+
+model Record {
+  id          Int       @id @default(autoincrement())
+  userId      Int
+  user        User      @relation(fields: [userId], references: [id])
+  mediaId     Int
+  media       Media     @relation(fields: [mediaId], references: [id])
+  analyticsId Int
+  analytics   Analytics @relation(fields: [analyticsId], references: [id])
+  // Add other fields as needed
+}
+
+model Analytics {
+  id         Int      @id @default(autoincrement())
+  CarCount   Int
+  BikesCount Int
+  // Add fields for analytics data
+  // Example: views, likes, comments, etc.
+  Record     Record[]
 }
