@@ -10,7 +10,7 @@ passport.use(new GoogleStrategy({
 },
     async (accessToken: string, refreshToken: string, profile: any, done: any) => {
         try {
-            return done(null, "User")
+            return done(null, profile)
         } catch (e) {
             return done(e, null)
         }

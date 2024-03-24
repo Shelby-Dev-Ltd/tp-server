@@ -11,11 +11,14 @@ dotenv.config()
 const port = process.env.PORT
 
 const app = express()
-app.use(session({ secret: "cats" }))
+app.use(session({
+    secret: 'keyboard cat',
+}));
 app.use(passport.initialize())
 app.use(passport.session())
 
 const isLoggedIn = (req: Request, res: Response, next: NextFunction) => {
+    console.log(req.user)
     req.user ? next() : res.sendStatus(401)
 }
 
@@ -30,13 +33,20 @@ app.get('/auth/google/callback', passport.authenticate('google', {
     failureRedirect: '/auth/failure',
 }))
 
-app.get('/protected', isLoggedIn, (req: Request, res: Response) => {
-    res.send('Hello World!')
+app.get('/logout', function (req, res, next) {
+    req.logout(function (err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
 })
 
 app.get('/auth/failure', (req: Request, res: Response) => {
     res.send('Something went wrong!')
     res.redirect('/')
+})
+
+app.get('/protected', isLoggedIn, (req: any, res: Response) => {
+    res.send(`Hello ${req.user.displayName}`)
 })
 
 app.listen(port, () => {
