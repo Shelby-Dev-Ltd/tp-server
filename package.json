@@ -12,11 +12,6 @@
     "prettier:check": "npm run prettier:base -- --list-different \"src/**/*.{ts,tsx}\"",
     "prettier:write": "npm run prettier:base -- --write \"src/**/*.{ts,tsx}\""
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run prettier:write"
-    }
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
@@ -40,5 +35,10 @@
     "express-session": "^1.18.0",
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier:write"
+    }
   }
 }
