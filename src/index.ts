@@ -14,7 +14,9 @@ const port = process.env.PORT
 const app = express()
 
 app.use(session({
-    secret: 'keyboard cat',
+    secret: process.env.GOOGLE_CLIENT_SECRET,
+    resave: false,
+    saveUninitialized: false,
 }));
 app.use(passport.initialize())
 app.use(passport.session())
