@@ -3,10 +3,13 @@ import prisma from "../../config/prisma";
 
 const GetAllRecords = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { take } = req.query;
+        const { take, unanalyzed } = req.query;
 
         // Get all records
         const records = await prisma.record.findMany({
+            where: {
+                ...(unanalyzed ? { analyticsId: { equals: 1 } } : {}),
+            },
             orderBy: {
                 id: 'desc',
             },
