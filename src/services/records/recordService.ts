@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../config/prisma";
-import { equal } from "assert";
 
 const GetAllRecords = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -13,38 +12,41 @@ const GetAllRecords = async (req: Request, res: Response, next: NextFunction) =>
             },
             take: Number(take) || undefined,
         });
-        res.send(JSON.stringify({
-            data: {
-                records
-            }
-        }));
 
-        next();
+        // Send the records in the response
+        res.status(200).json({ data: { records } });
     } catch (e) {
-        res.send({ error: e, status: 500 });
+        console.error(e);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
         next(e);
     }
 };
 
+
+
 const GetOneRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        // Upsert the media
-        const record = await prisma.record.findFirstOrThrow({
+        // Find the record with the specified id
+        const record = await prisma.record.findFirst({
             where: {
                 id: Number(id),
             }
         });
 
-        res.send(JSON.stringify({
-            data: {
-                record
-            }
-        }));
+        if (!record) {
+            // If record is not found, return a 404 response
+            res.status(404).json({ error: 'Record not found' });
+            return;
+        }
 
-        next();
+        // If record is found, return it in the response
+        res.status(200).json({ data: { record } });
     } catch (e) {
-        res.send({ error: e, status: 500 });
+        console.error(e);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
         next(e);
     }
 };
@@ -52,7 +54,7 @@ const GetOneRecord = async (req: Request, res: Response, next: NextFunction) => 
 
 const CreateRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        //Get query
+        // Get query
         const { user, mediaId, location } = req.body;
 
         // Create a record related to the media
@@ -63,25 +65,26 @@ const CreateRecord = async (req: Request, res: Response, next: NextFunction) => 
                 mediaId,
             },
         });
+        if (!record) throw Error('Failed to fetch data');
 
-        return {
-            data: {
-                record
-            }
-        }
+        // Send a success response
+        res.status(200).json({ data: { record } });
     } catch (e) {
         console.error(e);
-        res.send({ error: e, status: 500 });
+        // Send an error response
+        res.status(500).json({ error: e });
         next(e);
     }
 };
 
-const AttachAnalyticsToRecord = async (req: Request, res: Response, next: NextFunction) => { //updates analytics id of a record
+
+
+const AttachAnalyticsToRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        //Get query
+        // Get query
         const { recordId, analyticsId } = req.body;
 
-        // Create a record related to the media
+        // Update the record with the new analyticsId
         const record = await prisma.record.update({
             where: {
                 id: Number(recordId),
@@ -91,17 +94,17 @@ const AttachAnalyticsToRecord = async (req: Request, res: Response, next: NextFu
             },
         });
 
-        return {
-            data: {
-                record
-            }
-        }
+        // Send a success response
+        res.status(200).json({ data: { record } });
     } catch (e) {
         console.error(e);
-        res.send({ error: e, status: 500 });
+        // Send an error response
+        res.status(500).json({ error: e });
         next(e);
     }
 };
+
+
 
 
 export { GetAllRecords, GetOneRecord, CreateRecord, AttachAnalyticsToRecord }

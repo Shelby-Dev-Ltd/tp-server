@@ -3,18 +3,15 @@ import prisma from "../../config/prisma";
 
 const GetAllAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Get all records
+        // Get all analytics
         const analytics = await prisma.analytics.findMany();
 
-        res.send(JSON.stringify({
-            data: {
-                analytics
-            }
-        }));
-
-        next();
+        // Send the analytics in the response
+        res.status(200).json({ data: { analytics } });
     } catch (e) {
-        res.send({ error: e, status: 500 });
+        console.error(e);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
         next(e);
     }
 };
@@ -22,33 +19,29 @@ const GetAllAnalytics = async (req: Request, res: Response, next: NextFunction) 
 const GetOneAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.params;
-        // Upsert the media
+        // Get one analytics record
         const analytics = await prisma.analytics.findFirstOrThrow({
             where: {
                 id: Number(id)
             }
         });
 
-        res.send(JSON.stringify({
-            data: {
-                analytics
-            }
-        }));
-
-        next();
+        // Send the analytics in the response
+        res.status(200).json({ data: { analytics } });
     } catch (e) {
-        res.send({ error: e, status: 500 });
+        console.error(e);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
         next(e);
     }
 };
-
 
 const CreateAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {
         //Get query
         const { bikesCount, carCount } = req.body;
 
-        // Create a record related to the media
+        // Create an analytics record
         const analytics = await prisma.analytics.create({
             data: {
                 CarCount: carCount,
@@ -56,17 +49,17 @@ const CreateAnalytics = async (req: Request, res: Response, next: NextFunction) 
             },
         });
 
-        return {
-            data: {
-                analytics
-            }
-        }
+        // Send the created analytics record in the response
+        res.status(200).json({ data: { analytics } });
     } catch (e) {
         console.error(e);
-        res.send({ error: e, status: 500 });
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
         next(e);
     }
 };
+
+
 
 
 export { GetAllAnalytics, GetOneAnalytics, CreateAnalytics }

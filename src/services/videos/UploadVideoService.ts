@@ -18,16 +18,16 @@ const UploadVideo = async (req: Request, res: Response, next: NextFunction) => {
             },
         });
 
-        res.send(JSON.stringify({
-            data: {
-                media
-            }
-        }));
+        // Send the media in the response
+        res.status(200).json({ data: { media } });
         next();
     } catch (e) {
-        res.send({ error: e, status: 500 });
+        console.error(e);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
         next(e);
     }
 }
+
 
 export { UploadVideo }
