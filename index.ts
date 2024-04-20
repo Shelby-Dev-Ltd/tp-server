@@ -1,1 +1,1 @@
-import './src/index';
+import './src/index'; //redirect to actual root file
