@@ -1,6 +1,5 @@
 const session = require('express-session')
 
-require('./auth')
 const dotenv = require('dotenv');
 const express = require('express');
 const passport = require('passport');

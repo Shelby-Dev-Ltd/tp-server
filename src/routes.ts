@@ -8,7 +8,7 @@ import passport from 'passport';
 
 const express = require('express');
 const router = express.Router();
-
+require('./auth');
 // Add this middleware to parse JSON bodies
 router.use(express.json());
 
