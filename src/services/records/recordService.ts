@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../config/prisma";
+import { equal } from "assert";
 
 const GetAllRecords = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -25,13 +26,13 @@ const GetAllRecords = async (req: Request, res: Response, next: NextFunction) =>
     }
 };
 
-const GetRecord = async (req: Request, res: Response, next: NextFunction) => {
+const GetOneRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id } = req.body;
+        const { id } = req.params;
         // Upsert the media
         const record = await prisma.record.findFirstOrThrow({
             where: {
-                id
+                id: Number(id),
             }
         });
 
@@ -75,5 +76,32 @@ const CreateRecord = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
+const AttachAnalyticsToRecord = async (req: Request, res: Response, next: NextFunction) => { //updates analytics id of a record
+    try {
+        //Get query
+        const { recordId, analyticsId } = req.body;
 
-export { GetAllRecords, GetRecord, CreateRecord }
+        // Create a record related to the media
+        const record = await prisma.record.update({
+            where: {
+                id: Number(recordId),
+            },
+            data: {
+                analyticsId: Number(analyticsId),
+            },
+        });
+
+        return {
+            data: {
+                record
+            }
+        }
+    } catch (e) {
+        console.error(e);
+        res.send({ error: e, status: 500 });
+        next(e);
+    }
+};
+
+
+export { GetAllRecords, GetOneRecord, CreateRecord, AttachAnalyticsToRecord }
