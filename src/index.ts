@@ -17,7 +17,7 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-const routes = require('./routes')
+const routes = require('./routes.ts')
 
 app.use('/', routes)
 
