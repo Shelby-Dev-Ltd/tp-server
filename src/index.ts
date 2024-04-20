@@ -1,9 +1,9 @@
-import dotenv from 'dotenv'
-import express from 'express'
-import passport from 'passport'
 const session = require('express-session')
 
 require('./auth')
+const dotenv = require('dotenv');
+const express = require('express');
+const passport = require('passport');
 
 dotenv.config()
 const port = process.env.PORT
