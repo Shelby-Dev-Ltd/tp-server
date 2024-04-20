@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/src/index.ts",
+    "start": "npx tsx dist/src/index.ts",
     "dev": "nodemon src/index.ts",
     "lint": "eslint -c .eslintrc.js --ext .ts /src",
     "prettier:base": "prettier --parser typescript --single-quote",
@@ -33,6 +33,7 @@
     "prisma": "^5.11.0",
     "ts-node": "^10.9.2",
     "tslint-config-prettier": "^1.18.0",
+    "tsx": "^4.7.2",
     "typescript": "^5.4.2"
   },
   "dependencies": {
