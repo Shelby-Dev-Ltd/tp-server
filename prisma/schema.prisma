@@ -27,14 +27,17 @@ model Profile {
   userId   Int     @unique
   user     User    @relation(fields: [userId], references: [id])
   photoUrl String?
-  // Add other fields for extra information
+}
+
+enum MediaType {
+  VIDEO
+  IMAGE
 }
 
 model Media {
-  id     Int      @id @default(autoincrement())
-  url    String   @unique
-  type   String // Enum might be better here if you have limited types
-  // Add other fields as needed
+  id     Int       @id @default(autoincrement())
+  url    String    @unique
+  type   MediaType @default(VIDEO)
   Record Record[]
 }
 
@@ -48,14 +51,12 @@ model Record {
   date        DateTime  @default(now())
   analyticsId Int       @default(1)
   analytics   Analytics @relation(fields: [analyticsId], references: [id])
-  // Add other fields as needed
 }
 
 model Analytics {
   id         Int      @id @default(autoincrement())
-  CarCount   Int
-  BikesCount Int
-  // Add fields for analytics data
-  // Example: views, likes, comments, etc.
+  CarCount   Int      @default(0)
+  BikeCount  Int      @default(0)
+  TruckCount Int      @default(0)
   Record     Record[]
 }
