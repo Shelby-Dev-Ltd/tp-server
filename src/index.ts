@@ -20,7 +20,7 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 
-app.use('/', routes)
+app.use('/v1/api', routes)
 
 app.listen(port, () => {
     console.log(`Traffic Pulse Server listening on port ${port}`)
