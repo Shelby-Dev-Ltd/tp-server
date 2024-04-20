@@ -9,7 +9,7 @@ const GetAllRecords = async (req: Request, res: Response, next: NextFunction) =>
         // Get all records
         const records = await prisma.record.findMany({
             orderBy: {
-                date: 'asc',
+                id: 'desc',
             },
             take: Number(take) || undefined,
         });
