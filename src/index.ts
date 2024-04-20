@@ -46,7 +46,7 @@ app.get('/auth/failure', (req: Request, res: Response) => {
     res.redirect('/')
 })
 
-app.get('/protected', isLoggedIn, (req: any, res: Response) => {
+app.get('/protected', isLoggedIn, (req: Request, res: Response) => {
     console.log(req);
     res.send(req.user)
 })
