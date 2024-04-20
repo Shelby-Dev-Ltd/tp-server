@@ -32,7 +32,7 @@ model Profile {
 
 model Media {
   id     Int      @id @default(autoincrement())
-  url    String
+  url    String   @unique
   type   String // Enum might be better here if you have limited types
   // Add other fields as needed
   Record Record[]
@@ -44,7 +44,9 @@ model Record {
   user        User      @relation(fields: [userId], references: [id])
   mediaId     Int
   media       Media     @relation(fields: [mediaId], references: [id])
-  analyticsId Int
+  location    String    @default("")
+  date        DateTime  @default(now())
+  analyticsId Int       @default(1)
   analytics   Analytics @relation(fields: [analyticsId], references: [id])
   // Add other fields as needed
 }

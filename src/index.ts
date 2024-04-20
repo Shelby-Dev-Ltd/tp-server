@@ -47,8 +47,10 @@ app.get('/auth/failure', (req: Request, res: Response) => {
 })
 
 app.get('/protected', isLoggedIn, (req: any, res: Response) => {
+    console.log(req);
     res.send(req.user)
 })
+
 
 app.use('/', routes)
 

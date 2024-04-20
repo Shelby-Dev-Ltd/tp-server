@@ -7,12 +7,13 @@ const GoogleStrategy = require('passport-google-oauth2').Strategy;
 
 const userService = new UserService()
 
-passport.use(new GoogleStrategy({
+passport.use('google', new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: `http://localhost:${process.env.PORT}/auth/google/callback`
 },
     async (accessToken: string, refreshToken: string, profile: any, done: any) => {
+        console.log(accessToken);
         try {
             const user = await userService.findUser(profile.id)
             if (!user) {
