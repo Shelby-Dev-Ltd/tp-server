@@ -1,1 +1,1 @@
-require('./src/indexsss');
+require('./src/index.ts');
