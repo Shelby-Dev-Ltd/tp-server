@@ -1,8 +1,10 @@
-const session = require('express-session')
+import session from 'express-session';
 
-const dotenv = require('dotenv');
-const express = require('express');
-const passport = require('passport');
+import dotenv from 'dotenv';
+import express from 'express';
+import passport from 'passport';
+import routes from './routes';
+
 
 dotenv.config()
 const port = process.env.PORT
@@ -10,14 +12,13 @@ const port = process.env.PORT
 const app = express()
 
 app.use(session({
-    secret: process.env.GOOGLE_CLIENT_SECRET,
+    secret: process.env.GOOGLE_CLIENT_SECRET || "",
     resave: false,
     saveUninitialized: false,
 }));
 app.use(passport.initialize())
 app.use(passport.session())
 
-const routes = require('./routes.ts')
 
 app.use('/', routes)
 

@@ -5,10 +5,10 @@ import { AttachAnalyticsToRecord, CreateRecord, GetAllRecords, GetOneRecord } fr
 import { CreateAnalytics, GetAllAnalytics, GetOneAnalytics } from './services/analytics/analyticsService';
 import { isLoggedIn } from "./middleware"
 import passport from 'passport';
+import './auth';
+import express from 'express';
 
-const express = require('express');
 const router = express.Router();
-require('./auth');
 // Add this middleware to parse JSON bodies
 router.use(express.json());
 
@@ -61,4 +61,4 @@ router.post('/analytics', CreateAnalytics)
 
 
 
-module.exports = router;
+export default router;
