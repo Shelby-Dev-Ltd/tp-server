@@ -54,7 +54,6 @@ const GetOneRecord = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
-
 const CreateRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get query

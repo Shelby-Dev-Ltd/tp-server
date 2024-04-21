@@ -60,7 +60,78 @@ const CreateAnalytics = async (req: Request, res: Response, next: NextFunction) 
     }
 };
 
+// Get analytics grouped monthly for data visualization purposes
+const GetAnalyticsData = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { userId } = req.body;
+
+        const records = await prisma.record.findMany({
+            where: {
+                user: {
+                    id: userId
+                }
+            },
+            select: {
+                date: true,
+                analyticsId: true
+            }
+        });
+
+        // Group records by month
+        const groupedRecords = records.reduce((acc: any, curr) => {
+            const month = curr.date.getMonth() + 1;
+            const year = curr.date.getFullYear();
+            const key = `${year}-${month.toString().padStart(2, '0')}`;
+
+            if (!acc[key]) {
+                acc[key] = [];
+            }
+
+            acc[key].push(curr.analyticsId);
+
+            return acc;
+        }, {});
+
+        // Get analytics for each month
+        const monthlyAnalytics = await Promise.all(
+            Object.entries(groupedRecords).map(async ([date, analyticsIds]) => {
+                const analytics = await prisma.analytics.findMany({
+                    where: {
+                        id: {
+                            //@ts-ignore
+                            in: analyticsIds
+                        },
+                        NOT: {
+                            id: 1 // Exclude analytics with id 1
+                        }
+                    },
+                    select: {
+                        CarCount: true,
+                        BikeCount: true,
+                        TruckCount: true
+                    }
+                });
+
+                return {
+                    date: new Date(date),
+                    CarCount: analytics.reduce((sum, { CarCount }) => sum + CarCount, 0),
+                    BikeCount: analytics.reduce((sum, { BikeCount }) => sum + BikeCount, 0),
+                    TruckCount: analytics.reduce((sum, { TruckCount }) => sum + TruckCount, 0)
+                };
+            })
+        );
+
+        console.log(monthlyAnalytics);
 
 
+        // Send the records in the response
+        res.status(200).json({ data: { records } });
+    } catch (e) {
+        console.error(e);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
+        next(e);
+    }
+};
 
-export { GetAllAnalytics, GetOneAnalytics, CreateAnalytics }
+export { GetAllAnalytics, GetOneAnalytics, GetAnalyticsData, CreateAnalytics }
