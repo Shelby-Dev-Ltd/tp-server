@@ -56,7 +56,7 @@ router.post('/records', CreateRecord);
 //Analytics
 router.get('/analytics', GetAllAnalytics);
 router.get('/analytics/[id]', GetOneAnalytics);
-router.get('/analytics');
+router.post('/analytics', CreateAnalytics);
 
 router.post('/analytics/data', GetAnalyticsData);
 
