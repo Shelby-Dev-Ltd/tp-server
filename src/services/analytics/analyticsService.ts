@@ -121,11 +121,8 @@ const GetAnalyticsData = async (req: Request, res: Response, next: NextFunction)
             })
         );
 
-        console.log(monthlyAnalytics);
-
-
-        // Send the records in the response
-        res.status(200).json({ data: { records } });
+        // Send the monthly analytics in the response
+        res.status(200).json({ data: { monthlyAnalytics } });
     } catch (e) {
         console.error(e);
         // If an error occurs, return a 500 response
