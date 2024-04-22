@@ -54,6 +54,42 @@ const GetOneRecord = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
+const GetRecordAnalytics = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.params;
+        // Find the record with the specified id
+        const record = await prisma.record.findFirstOrThrow({
+            where: {
+                id: Number(id),
+            }
+        });
+
+        if (record.analyticsId < 2) return res.status(200).json({ data: { isAnalyzing: true } });
+
+        const analytics = await prisma.analytics.findFirstOrThrow({
+            where: {
+                id: record.analyticsId
+            }
+        })
+
+        // If record is found, return it in the response
+        res.status(200).json({
+            data: {
+                BikeCount: analytics.BikeCount,
+                CarCount: analytics.CarCount,
+                TruckCount: analytics.TruckCount,
+                date: record.date,
+                isAnalyzing: false,
+            }
+        });
+    } catch (e) {
+        console.error(e);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
+        next(e);
+    }
+};
+
 const CreateRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get query
@@ -107,6 +143,4 @@ const AttachAnalyticsToRecord = async (req: Request, res: Response, next: NextFu
 };
 
 
-
-
-export { GetAllRecords, GetOneRecord, CreateRecord, AttachAnalyticsToRecord }
+export { GetAllRecords, GetOneRecord, CreateRecord, AttachAnalyticsToRecord, GetRecordAnalytics };
