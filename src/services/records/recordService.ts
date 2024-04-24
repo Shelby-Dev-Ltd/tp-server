@@ -14,6 +14,9 @@ const GetAllRecords = async (req: Request, res: Response, next: NextFunction) =>
                 id: 'desc',
             },
             take: Number(take) || undefined,
+            include: {
+                media: true,
+            }
         });
 
         // Send the records in the response
