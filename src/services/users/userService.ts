@@ -6,7 +6,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.body;
 
-        console.log(id);
+        if (!id) throw ('No id provided!')
 
         const user = await prisma.user.findUnique({
             where: {
