@@ -44,7 +44,7 @@ router.get('/protected', isLoggedIn, (req: Request, res: Response) => {
 router.get('/hi', HelloService);
 
 // User
-router.post('/user/edit/:userId', updateUser);
+router.patch('/user/edit/:userId', updateUser);
 router.post('/login', loginUser);
 
 // Video
