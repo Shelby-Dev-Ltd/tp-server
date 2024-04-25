@@ -47,7 +47,9 @@ model Record {
   user        User      @relation(fields: [userId], references: [id])
   mediaId     Int
   media       Media     @relation(fields: [mediaId], references: [id])
-  location    String    @default("")
+  address     String    @default("")
+  latitude    String    @default("")
+  longitude   String    @default("")
   date        DateTime  @default(now())
   analyticsId Int       @default(1)
   analytics   Analytics @relation(fields: [analyticsId], references: [id])
@@ -55,6 +57,7 @@ model Record {
 
 model Analytics {
   id         Int      @id @default(autoincrement())
+  decision   String   @default("")
   CarCount   Int      @default(0)
   BikeCount  Int      @default(0)
   TruckCount Int      @default(0)

@@ -96,13 +96,15 @@ const GetRecordAnalytics = async (req: Request, res: Response, next: NextFunctio
 const CreateRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
         // Get query
-        const { user, mediaId, location } = req.body;
+        const { user, mediaId, address, longitude, latitude } = req.body;
 
         // Create a record related to the media
         const record = await prisma.record.create({
             data: {
                 userId: user.id,
-                location,
+                address,
+                longitude,
+                latitude,
                 mediaId,
             },
         });
