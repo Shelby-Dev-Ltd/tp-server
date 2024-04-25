@@ -7,6 +7,7 @@ import { isLoggedIn } from "./middleware"
 import passport from 'passport';
 import './auth';
 import express from 'express';
+import { updateUser } from './services/users/userService';
 
 const router = express.Router();
 // Add this middleware to parse JSON bodies
@@ -60,6 +61,9 @@ router.get('/analytics/:id', GetOneAnalytics);
 router.post('/analytics', CreateAnalytics);
 
 router.post('/analytics/data', GetAnalyticsData);
+
+//User
+router.patch('user/edit/:id', updateUser);
 
 
 
