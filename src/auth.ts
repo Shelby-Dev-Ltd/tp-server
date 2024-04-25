@@ -1,10 +1,8 @@
 import passport from 'passport'
-import { UserService } from './services/users/userService';
+import { findUser, createUser } from './services/users/helper/userFunctions';
 import dotenv from 'dotenv';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth2';
 dotenv.config()
-
-const userService = new UserService()
 
 passport.use('google', new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID || '',
@@ -14,9 +12,9 @@ passport.use('google', new GoogleStrategy({
     async (accessToken: string, refreshToken: string, profile: any, done: any) => {
         console.log(accessToken);
         try {
-            const user = await userService.findUser(profile.id)
+            const user = await findUser(profile.id)
             if (!user) {
-                const newUser = await userService.createUser(profile.id, profile)
+                const newUser = await createUser(profile.id, profile)
                 if (!newUser) throw Error("Failed to create the new user! Please try again later!")
             }
             return done(null, { profile, accessToken, refreshToken })
