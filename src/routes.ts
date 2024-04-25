@@ -7,7 +7,7 @@ import { isLoggedIn } from "./middleware"
 import passport from 'passport';
 import './auth';
 import express from 'express';
-import { updateUser } from './services/users/userService';
+import { loginUser, updateUser } from './services/users/userService';
 
 const router = express.Router();
 // Add this middleware to parse JSON bodies
@@ -43,10 +43,14 @@ router.get('/protected', isLoggedIn, (req: Request, res: Response) => {
 
 router.get('/hi', HelloService);
 
-//Video
+// User
+router.post('/user/edit/:userId', updateUser);
+router.post('/login', loginUser);
+
+// Video
 router.post('/upload-video', UploadVideo);
 
-//Records
+// Records
 router.get('/records', GetAllRecords);
 router.get('/records/:id', GetOneRecord);
 router.get('/records/:id/analytics', GetRecordAnalytics);
@@ -55,16 +59,11 @@ router.post('/records/attach', AttachAnalyticsToRecord);
 
 router.post('/records', CreateRecord);
 
-//Analytics
+// Analytics
 router.get('/analytics', GetAllAnalytics);
 router.get('/analytics/:id', GetOneAnalytics);
 router.post('/analytics', CreateAnalytics);
 
 router.post('/analytics/data', GetAnalyticsData);
-
-//User
-router.post('/user/edit/:userId', updateUser);
-
-
 
 export default router;

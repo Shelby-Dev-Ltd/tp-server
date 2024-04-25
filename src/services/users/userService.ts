@@ -1,6 +1,26 @@
 import { NextFunction, Request, Response } from "express";
 import prisma from "../../config/prisma";
-import { createUser, findUser } from "./helper/userFunctions";
+import { findUser } from "./helper/userFunctions";
+
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { id } = req.body;
+
+        const user = await prisma.user.findUniqueOrThrow({
+            where: {
+                id: Number(id)
+            }
+        })
+
+        // If record is found, return it in the response
+        res.status(200).json({ data: { user } });
+    } catch (error) {
+        console.error(error);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error });
+        next(error);
+    }
+}
 
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -33,4 +53,4 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 }
 
-export { updateUser, findUser, createUser }
+export { updateUser, loginUser }
