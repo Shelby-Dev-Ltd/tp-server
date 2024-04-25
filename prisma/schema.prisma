@@ -46,7 +46,7 @@ model Record {
   userId      Int
   user        User      @relation(fields: [userId], references: [id])
   mediaId     Int
-  media       Media     @relation(fields: [mediaId], references: [id])
+  media       Media     @relation(fields: [mediaId], references: [id], onDelete: Cascade)
   address     String    @default("")
   latitude    String    @default("")
   longitude   String    @default("")
