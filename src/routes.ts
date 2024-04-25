@@ -63,7 +63,7 @@ router.post('/analytics', CreateAnalytics);
 router.post('/analytics/data', GetAnalyticsData);
 
 //User
-router.patch('/user/edit/:id', updateUser);
+router.post('/user/edit/:id', updateUser);
 
 
 
