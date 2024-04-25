@@ -23,10 +23,13 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
             },
         })
 
-        return updatedUser;
+        // If record is found, return it in the response
+        res.status(200).json({ data: { updatedUser } });
     } catch (error) {
-        console.error('Error updating user:', error);
-        return null;
+        console.error(error);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error });
+        next(error);
     }
 }
 
