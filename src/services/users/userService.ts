@@ -6,11 +6,13 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { id } = req.body;
 
-        const user = await prisma.user.findUniqueOrThrow({
+        const user = await prisma.user.findUnique({
             where: {
                 id: Number(id)
             }
         })
+
+        if (!user) throw Error('No user found');
 
         // If record is found, return it in the response
         res.status(200).json({ data: { user } });
