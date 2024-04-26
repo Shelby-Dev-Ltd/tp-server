@@ -38,6 +38,9 @@ const GetOneRecord = async (req: Request, res: Response, next: NextFunction) => 
         const record = await prisma.record.findFirst({
             where: {
                 id: Number(id),
+            },
+            include: {
+                analytics: true,
             }
         });
 
