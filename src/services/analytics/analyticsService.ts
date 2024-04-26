@@ -39,14 +39,15 @@ const GetOneAnalytics = async (req: Request, res: Response, next: NextFunction) 
 const CreateAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {
         //Get query
-        const { bikeCount, carCount, truckCount } = req.body;
+        const { bikeCount, carCount, truckCount, decision } = req.body;
 
         // Create an analytics record
         const analytics = await prisma.analytics.create({
             data: {
                 CarCount: carCount,
                 BikeCount: bikeCount,
-                TruckCount: truckCount
+                TruckCount: truckCount,
+                decision,
             },
         });
 
