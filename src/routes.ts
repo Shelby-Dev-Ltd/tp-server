@@ -65,6 +65,6 @@ router.get('/analytics/:id', GetOneAnalytics);
 router.post('/analytics', CreateAnalytics);
 
 router.post('/analytics/data', GetAnalyticsData);
-router.get('/analytics/count', GetAllTimeCount);
+router.get('/analytics/count/:userId', GetAllTimeCount);
 
 export default router;
