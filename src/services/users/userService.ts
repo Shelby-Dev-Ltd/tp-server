@@ -53,6 +53,9 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
                     }
                 },
             },
+            include: {
+                profile: true,
+            }
         })
 
         // If record is found, return it in the response
