@@ -132,4 +132,58 @@ const GetAnalyticsData = async (req: Request, res: Response, next: NextFunction)
     }
 };
 
-export { GetAllAnalytics, GetOneAnalytics, GetAnalyticsData, CreateAnalytics }
+const GetAllTimeCount = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { userId } = req.params;
+
+        const records = await prisma.record.findMany({
+            where: {
+                user: {
+                    id: Number(userId)
+                }
+            },
+            select: {
+                analyticsId: true
+            }
+        });
+
+        // Get all analytics IDs
+        const allAnalyticsIds = records.map(record => record.analyticsId);
+
+        // Get all analytics except analytics with ID 1
+        const allAnalytics = await prisma.analytics.findMany({
+            where: {
+                id: {
+                    in: allAnalyticsIds.filter(id => id !== 1)
+                }
+            },
+            select: {
+                CarCount: true,
+                BikeCount: true,
+                TruckCount: true
+            }
+        });
+
+        // Calculate the total counts
+        const car = allAnalytics.reduce((sum, { CarCount }) => sum + CarCount, 0);
+        const bike = allAnalytics.reduce((sum, { BikeCount }) => sum + BikeCount, 0);
+        const truck = allAnalytics.reduce((sum, { TruckCount }) => sum + TruckCount, 0);
+
+        // Send the total counts in the response
+        res.status(200).json({
+            data: {
+                car,
+                bike,
+                truck,
+            }
+        });
+    } catch (e) {
+        console.error(e);
+        // If an error occurs, return a 500 response
+        res.status(500).json({ error: e });
+        next(e);
+    }
+
+};
+
+export { GetAllAnalytics, GetOneAnalytics, GetAnalyticsData, CreateAnalytics, GetAllTimeCount }
