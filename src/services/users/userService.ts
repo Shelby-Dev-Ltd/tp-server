@@ -11,6 +11,9 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
         const user = await prisma.user.findUnique({
             where: {
                 id: Number(id)
+            },
+            include: {
+                profile: true,
             }
         })
 
@@ -28,7 +31,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { email, name } = req.body;
+        const { email, name, photoUrl } = req.body;
 
         const { userId } = req.params;
 
@@ -43,7 +46,12 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
             },
             data: {
                 email,
-                name
+                name,
+                profile: {
+                    update: {
+                        photoUrl
+                    }
+                },
             },
         })
 
