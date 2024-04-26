@@ -164,16 +164,16 @@ const GetAllTimeCount = async (req: Request, res: Response, next: NextFunction) 
         });
 
         // Calculate the total counts
-        const totalCarCount = allAnalytics.reduce((sum, { CarCount }) => sum + CarCount, 0);
-        const totalBikeCount = allAnalytics.reduce((sum, { BikeCount }) => sum + BikeCount, 0);
-        const totalTruckCount = allAnalytics.reduce((sum, { TruckCount }) => sum + TruckCount, 0);
+        const car = allAnalytics.reduce((sum, { CarCount }) => sum + CarCount, 0);
+        const bike = allAnalytics.reduce((sum, { BikeCount }) => sum + BikeCount, 0);
+        const truck = allAnalytics.reduce((sum, { TruckCount }) => sum + TruckCount, 0);
 
         // Send the total counts in the response
         res.status(200).json({
             data: {
-                totalCarCount,
-                totalBikeCount,
-                totalTruckCount
+                car,
+                bike,
+                truck,
             }
         });
     } catch (e) {
