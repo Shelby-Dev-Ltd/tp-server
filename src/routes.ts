@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { HelloService } from './services/hello';
 import { UploadVideo } from './services/videos/UploadVideoService';
 import { AttachAnalyticsToRecord, CreateRecord, GetAllRecords, GetOneRecord, GetRecordAnalytics } from './services/records/recordService';
-import { CreateAnalytics, GetAllAnalytics, GetAnalyticsData, GetOneAnalytics } from './services/analytics/analyticsService';
+import { CreateAnalytics, GetAllAnalytics, GetAllTimeCount, GetAnalyticsData, GetOneAnalytics } from './services/analytics/analyticsService';
 import { isLoggedIn } from "./middleware"
 import passport from 'passport';
 import './auth';
@@ -65,5 +65,6 @@ router.get('/analytics/:id', GetOneAnalytics);
 router.post('/analytics', CreateAnalytics);
 
 router.post('/analytics/data', GetAnalyticsData);
+router.get('/analytics/count', GetAllTimeCount);
 
 export default router;
