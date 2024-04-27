@@ -110,7 +110,8 @@ const GetAnalyticsData = async (req: Request, res: Response, next: NextFunction)
                     select: {
                         CarCount: true,
                         BikeCount: true,
-                        TruckCount: true
+                        TruckCount: true,
+                        BusCount: true,
                     }
                 });
 
@@ -118,7 +119,8 @@ const GetAnalyticsData = async (req: Request, res: Response, next: NextFunction)
                     date: new Date(date),
                     CarCount: analytics.reduce((sum, { CarCount }) => sum + CarCount, 0),
                     BikeCount: analytics.reduce((sum, { BikeCount }) => sum + BikeCount, 0),
-                    TruckCount: analytics.reduce((sum, { TruckCount }) => sum + TruckCount, 0)
+                    TruckCount: analytics.reduce((sum, { TruckCount }) => sum + TruckCount, 0),
+                    BusCount: analytics.reduce((sum, { BusCount }) => sum + BusCount, 0),
                 };
             })
         );
@@ -161,7 +163,8 @@ const GetAllTimeCount = async (req: Request, res: Response, next: NextFunction) 
             select: {
                 CarCount: true,
                 BikeCount: true,
-                TruckCount: true
+                TruckCount: true,
+                BusCount: true,
             }
         });
 
@@ -169,6 +172,7 @@ const GetAllTimeCount = async (req: Request, res: Response, next: NextFunction) 
         const car = allAnalytics.reduce((sum, { CarCount }) => sum + CarCount, 0);
         const bike = allAnalytics.reduce((sum, { BikeCount }) => sum + BikeCount, 0);
         const truck = allAnalytics.reduce((sum, { TruckCount }) => sum + TruckCount, 0);
+        const bus = allAnalytics.reduce((sum, { BusCount }) => sum + BusCount, 0);
 
         // Send the total counts in the response
         res.status(200).json({
@@ -176,6 +180,7 @@ const GetAllTimeCount = async (req: Request, res: Response, next: NextFunction) 
                 car,
                 bike,
                 truck,
+                bus,
             }
         });
     } catch (e) {
