@@ -89,6 +89,7 @@ const GetRecordAnalytics = async (req: Request, res: Response, next: NextFunctio
                 BikeCount: analytics.BikeCount,
                 CarCount: analytics.CarCount,
                 TruckCount: analytics.TruckCount,
+                BusCount: analytics.BusCount,
                 date: record.date,
                 isAnalyzing: false,
             }
