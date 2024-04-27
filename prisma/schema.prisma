@@ -61,5 +61,6 @@ model Analytics {
   CarCount   Int      @default(0)
   BikeCount  Int      @default(0)
   TruckCount Int      @default(0)
+  BusCount   Int      @default(0)
   Record     Record[]
 }
