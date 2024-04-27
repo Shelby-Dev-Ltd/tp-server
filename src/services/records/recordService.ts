@@ -46,7 +46,7 @@ const GetOneRecord = async (req: Request, res: Response, next: NextFunction) => 
 
         if (!record) {
             // If record is not found, return a 404 response
-            res.status(404).json({ data: { isAnalyzing: true }, error: 'Record not found' });
+            res.status(404).json({ data: { record: { isAnalyzing: true } }, error: 'Record not found' });
             return;
         }
 
