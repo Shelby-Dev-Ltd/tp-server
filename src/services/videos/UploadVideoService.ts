@@ -3,7 +3,7 @@ import prisma from "../../config/prisma";
 
 const UploadVideo = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { url } = req.body;
+        const { url, duration } = req.body;
 
         // Upsert the media
         const media = await prisma.media.upsert({
@@ -11,10 +11,12 @@ const UploadVideo = async (req: Request, res: Response, next: NextFunction) => {
             update: {
                 url,
                 type: 'VIDEO',
+                duration,
             },
             create: {
                 url,
                 type: 'VIDEO',
+                duration,
             },
         });
 
