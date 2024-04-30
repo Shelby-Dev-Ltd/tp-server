@@ -35,10 +35,11 @@ enum MediaType {
 }
 
 model Media {
-  id     Int       @id @default(autoincrement())
-  url    String    @unique
-  type   MediaType @default(VIDEO)
-  Record Record[]
+  id       Int       @id @default(autoincrement())
+  url      String    @unique
+  type     MediaType @default(VIDEO)
+  duration String    @default("00:00:00")
+  Record   Record[]
 }
 
 model Record {

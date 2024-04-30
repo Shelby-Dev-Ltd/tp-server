@@ -16,6 +16,7 @@ const GetAllRecords = async (req: Request, res: Response, next: NextFunction) =>
             take: Number(take) || undefined,
             include: {
                 media: true,
+                analytics: true,
             }
         });
 
