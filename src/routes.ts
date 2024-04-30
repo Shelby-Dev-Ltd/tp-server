@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { HelloService } from './services/hello';
 import { UploadVideo } from './services/videos/UploadVideoService';
-import { AttachAnalyticsToRecord, CreateRecord, GetAllRecords, GetOneRecord, GetRecordAnalytics } from './services/records/recordService';
+import { AttachAnalyticsToRecord, CreateRecord, DeleteRecord, GetAllRecords, GetOneRecord, GetRecordAnalytics } from './services/records/recordService';
 import { CreateAnalytics, GetAllAnalytics, GetAllTimeCount, GetAnalyticsData, GetOneAnalytics } from './services/analytics/analyticsService';
 import { isLoggedIn } from "./middleware"
 import passport from 'passport';
@@ -53,6 +53,7 @@ router.post('/upload-video', UploadVideo);
 // Records
 router.get('/records', GetAllRecords);
 router.get('/records/:id', GetOneRecord);
+router.delete('/records/:id', DeleteRecord);
 router.get('/records/:id/analytics', GetRecordAnalytics);
 
 router.post('/records/attach', AttachAnalyticsToRecord);

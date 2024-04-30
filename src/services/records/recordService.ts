@@ -130,7 +130,27 @@ const CreateRecord = async (req: Request, res: Response, next: NextFunction) => 
     }
 };
 
+const DeleteRecord = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        // Get query
+        const { id } = req.params;
 
+        // Create a record related to the media
+        const record = await prisma.record.delete({
+            where: {
+                id: Number(id)
+            }
+        })
+
+        // Send a success response
+        res.status(200).json({ data: { record } });
+    } catch (e) {
+        console.error(e);
+        // Send an error response
+        res.status(500).json({ error: e });
+        next(e);
+    }
+};
 
 const AttachAnalyticsToRecord = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -158,4 +178,4 @@ const AttachAnalyticsToRecord = async (req: Request, res: Response, next: NextFu
 };
 
 
-export { GetAllRecords, GetOneRecord, CreateRecord, AttachAnalyticsToRecord, GetRecordAnalytics };
+export { GetAllRecords, GetOneRecord, CreateRecord, AttachAnalyticsToRecord, GetRecordAnalytics, DeleteRecord };
