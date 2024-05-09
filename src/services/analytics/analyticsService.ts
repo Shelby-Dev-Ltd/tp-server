@@ -182,6 +182,17 @@ const GetAllTimeCount = async (req: Request, res: Response, next: NextFunction) 
             }
         });
 
+        if (!records) {
+            return res.status(200).json({
+                data: {
+                    car: 0,
+                    bike: 0,
+                    truck: 0,
+                    bus: 0,
+                }
+            });
+        }
+
         // Get all analytics IDs
         const allAnalyticsIds = records.map(record => record.analyticsId);
 
@@ -199,6 +210,17 @@ const GetAllTimeCount = async (req: Request, res: Response, next: NextFunction) 
                 BusCount: true,
             }
         });
+
+        if (!allAnalytics) {
+            return res.status(200).json({
+                data: {
+                    car: 0,
+                    bike: 0,
+                    truck: 0,
+                    bus: 0,
+                }
+            });
+        }
 
         // Calculate the total counts
         const car = allAnalytics.reduce((sum, { CarCount }) => sum + CarCount, 0);
