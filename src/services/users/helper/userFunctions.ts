@@ -22,24 +22,15 @@ const createUser = async (oauthId: string, profile: { email: string, name: strin
                 email: profile.email,
                 name: profile.name,
                 oauthId,
+                profile: {
+                    create: {
+                        photoUrl: profile.photoUrl,
+                        // Add other fields for extra information if needed
+                    },
+                },
             },
             include: {
                 profile: true,
-            }
-        });
-
-        if (!user) {
-            throw new Error('Failed to create user');
-        }
-
-        const createdProfile = await prisma.profile.create({
-            data: {
-                userId: user.id,
-                photoUrl: profile.photoUrl,
-                // Add other fields for extra information if needed
-            },
-            include: {
-                user: true,
             },
         });
 
@@ -49,5 +40,6 @@ const createUser = async (oauthId: string, profile: { email: string, name: strin
         return null;
     }
 }
+
 
 export { findUser, createUser }
