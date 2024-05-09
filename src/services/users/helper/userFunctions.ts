@@ -15,14 +15,17 @@ const findUser = async (id: number): Promise<User | null> => {
     }
 }
 
-const createUser = async (oauthId: string, profile: any): Promise<User | null> => {
+const createUser = async (oauthId: string, profile: { email: string, name: string, photoUrl: string }) => {
     try {
         const user = await prisma.user.create({
             data: {
                 email: profile.email,
-                name: profile.name?.givenName,
+                name: profile.name,
                 oauthId,
             },
+            include: {
+                profile: true,
+            }
         });
 
         if (!user) {
@@ -32,7 +35,7 @@ const createUser = async (oauthId: string, profile: any): Promise<User | null> =
         const createdProfile = await prisma.profile.create({
             data: {
                 userId: user.id,
-                photoUrl: profile.photos[0].value
+                photoUrl: profile.photoUrl,
                 // Add other fields for extra information if needed
             },
             include: {
@@ -40,7 +43,7 @@ const createUser = async (oauthId: string, profile: any): Promise<User | null> =
             },
         });
 
-        return createdProfile.user;
+        return user;
     } catch (error) {
         console.error('Error creating user:', error);
         return null;
