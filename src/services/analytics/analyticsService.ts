@@ -3,8 +3,38 @@ import prisma from "../../config/prisma";
 
 const GetAllAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Get all analytics
-        const analytics = await prisma.analytics.findMany();
+        const { userId } = req.query;
+
+        // Get all records for the given userId
+        const records = await prisma.record.findMany({
+            where: {
+                AND: [
+                    {
+                        userId: Number(userId),
+                    },
+                    {
+                        analyticsId: {
+                            not: 1,
+                        }
+                    }
+                ]
+            },
+        });
+
+        // Fetch analytics for each record
+        const analyticsPromises = records.map(async (record) => {
+            return prisma.analytics.findMany({
+                where: {
+                    id: record.analyticsId,
+                },
+            });
+        });
+
+        // Wait for all analytics to be fetched
+        const analyticsArrays = await Promise.all(analyticsPromises);
+
+        // Merge all analytics arrays into a single array
+        const analytics = analyticsArrays.flat();
 
         // Send the analytics in the response
         res.status(200).json({ data: { analytics } });
@@ -15,6 +45,8 @@ const GetAllAnalytics = async (req: Request, res: Response, next: NextFunction) 
         next(e);
     }
 };
+
+
 
 const GetOneAnalytics = async (req: Request, res: Response, next: NextFunction) => {
     try {

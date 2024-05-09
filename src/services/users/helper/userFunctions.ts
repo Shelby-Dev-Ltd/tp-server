@@ -3,9 +3,9 @@ import prisma from "../../../config/prisma";
 
 const findUser = async (id: number): Promise<User | null> => {
     try {
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: {
-                id: id
+                id,
             }
         });
         return user;
@@ -15,13 +15,13 @@ const findUser = async (id: number): Promise<User | null> => {
     }
 }
 
-const createUser = async (id: number, profile: any): Promise<User | null> => {
+const createUser = async (oauthId: string, profile: any): Promise<User | null> => {
     try {
         const user = await prisma.user.create({
             data: {
                 email: profile.email,
                 name: profile.name?.givenName,
-                id: profile.id,
+                oauthId,
             },
         });
 

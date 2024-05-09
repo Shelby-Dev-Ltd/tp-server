@@ -5,9 +5,12 @@ const GetAllRecords = async (req: Request, res: Response, next: NextFunction) =>
     try {
         const { take, unanalyzed } = req.query;
 
+        const { userId } = req.params;
+
         // Get all records
         const records = await prisma.record.findMany({
             where: {
+                userId: Number(userId),
                 ...(unanalyzed ? { analyticsId: { equals: 1 } } : {}),
             },
             orderBy: {

@@ -4,13 +4,13 @@ import { findUser } from "./helper/userFunctions";
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { id } = req.body;
+        const { oauthId } = req.body;
 
-        if (!id) throw ('No id provided!')
+        if (!oauthId) throw ('No oauth id provided!')
 
-        const user = await prisma.user.findUnique({
+        const user = await prisma.user.findFirst({
             where: {
-                id: Number(id)
+                oauthId,
             },
             include: {
                 profile: true,
@@ -40,9 +40,10 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
         if (!user) {
             throw new Error('User not found');
         }
+
         const updatedUser = await prisma.user.update({
             where: {
-                id: Number(userId)
+                id: Number(userId),
             },
             data: {
                 email,
