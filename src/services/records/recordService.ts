@@ -5,7 +5,7 @@ const GetAllRecords = async (req: Request, res: Response, next: NextFunction) =>
     try {
         const { take, unanalyzed } = req.query;
 
-        const { userId } = req.params;
+        const { userId } = req.query;
 
         // Get all records
         const records = await prisma.record.findMany({
