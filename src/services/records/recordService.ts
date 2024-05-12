@@ -133,6 +133,9 @@ const CreateRecord = async (req: Request, res: Response, next: NextFunction) => 
         });
         if (!record) throw Error('Failed to fetch data');
 
+        // Call the prediction endpoint without waiting for a response
+        fetch(`${process.env.BASE_ANALYZER_API_URL}/predict`);
+
         // Send a success response
         res.status(200).json({ data: { record } });
     } catch (e) {
