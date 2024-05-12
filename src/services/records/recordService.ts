@@ -4,17 +4,24 @@ import prisma from "../../config/prisma";
 const GetAllRecords = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { take, unanalyzed } = req.query;
-
         const { userId } = req.query;
 
-        console.log(userId);
+        let recordsQuery = {};
+
+        if (userId) {
+            recordsQuery = {
+                userId: Number(userId),
+                ...(unanalyzed ? { analyticsId: { equals: 1 } } : {}),
+            };
+        } else {
+            recordsQuery = {
+                ...(unanalyzed ? { analyticsId: { equals: 1 } } : {}),
+            };
+        }
 
         // Get all records
         const records = await prisma.record.findMany({
-            where: {
-                userId: Number(userId),
-                ...(unanalyzed ? { analyticsId: { equals: 1 } } : {}),
-            },
+            where: recordsQuery,
             orderBy: {
                 id: 'desc',
             },
@@ -34,6 +41,7 @@ const GetAllRecords = async (req: Request, res: Response, next: NextFunction) =>
         next(e);
     }
 };
+
 
 
 
