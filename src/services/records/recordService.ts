@@ -55,6 +55,7 @@ const GetOneRecord = async (req: Request, res: Response, next: NextFunction) => 
             },
             include: {
                 analytics: true,
+                media: true,
             }
         });
 
