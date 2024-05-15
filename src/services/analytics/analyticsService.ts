@@ -103,7 +103,10 @@ const GetAnalyticsData = async (req: Request, res: Response, next: NextFunction)
             where: {
                 user: {
                     id: userId
-                }
+                },
+                analyticsId: {
+                    not: 1,
+                },
             },
             select: {
                 date: true,
@@ -135,9 +138,6 @@ const GetAnalyticsData = async (req: Request, res: Response, next: NextFunction)
                             //@ts-ignore
                             in: analyticsIds
                         },
-                        NOT: {
-                            id: 1 // Exclude analytics with id 1
-                        }
                     },
                     select: {
                         CarCount: true,
